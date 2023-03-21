@@ -9,6 +9,7 @@ import os
 from contextlib import nullcontext
 from pathlib import Path
 from typing import Optional
+import yaml
 
 import torch
 import torch.nn.functional as F
@@ -419,7 +420,15 @@ def get_full_repo_name(model_id: str, organization: Optional[str] = None, token:
         return f"{organization}/{model_id}"
 
 
-def main(args):
+def main():
+    from_file = True
+    train_config = 'train.config.yml'
+
+    if from_file:
+        args = parse_args_from_file(train_config)
+    else:
+        args = parse_args()
+
     logging_dir = Path(args.output_dir, "0", args.logging_dir)
 
     accelerator = Accelerator(
@@ -864,6 +873,21 @@ def main(args):
     accelerator.end_training()
 
 
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+def parse_args_from_file(file_path):
+    with open(os.path.join(os.getcwd(), file_path), 'r') as stream:
+        try:
+        # Converts yaml document to python object
+            args=yaml.safe_load(stream)
+        except yaml.YAMLError as e:
+            print(e)
+    args = dotdict(args)
+    return args
+
 if __name__ == "__main__":
-    args = parse_args()
-    main(args)
+    main()
