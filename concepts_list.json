@@ -1,0 +1,8 @@
+[
+    {
+        "instance_prompt": "photo of limo button",
+        "class_prompt": "photo of a button",
+        "instance_data_dir": "/home/team2/stable_diffusion/data/limo",
+        "class_data_dir": "/home/team2/stable_diffusion/data/button"
+    }
+]
