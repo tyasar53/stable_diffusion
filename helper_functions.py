@@ -120,16 +120,26 @@ def get_concepts(weights_path):
         print(f"train run paths: {train_run['weights_path']}  == {weights_path}")
         if train_run['weights_path'] == weights_path:
             concepts = train_run['concepts_list']
+            #print(concepts)
             break
     
     concepts_to_return = []
     for concept in concepts:
         images = []
-        for image_path in next(os.walk(concept['instance_data_dir']))[2]:
-            images.append(
-                Image.open(os.path.join(concept['instance_data_dir'], image_path))
-            )
+        os_walk = os.walk(concept['instance_data_dir'])
+    
+        for directory in os_walk:
+            files = directory[2]
+            if len(files) > 0:
+                for file_path in files:
+                    images.append(Image.open(os.path.join(concept['instance_data_dir'], file_path)))
+            
+        #for image_path in next(os.walk(concept['instance_data_dir']))[2]:
+        #    print(image_path)
+        #    images.append(
+        #        Image.open(os.path.join(concept['instance_data_dir'], image_path))
+        #    )
         
         concepts_to_return.append( {"instance_prompt": concept['instance_prompt'], "class_prompt": concept['class_prompt'], "instance_images": images} )
-
+    print(concepts_to_return)
     return concepts_to_return

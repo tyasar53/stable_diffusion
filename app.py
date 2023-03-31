@@ -10,7 +10,7 @@ from zipfile import ZipFile
 from helper_functions import construct_concept_objects, construct_json, upload_files, empty_data_dir, adapt_training_config, get_available_models, log_training, get_concepts
 from train_dreambooth import main
 
-MAX_CONCEPTS_TO_SHOW=10
+MAX_CONCEPTS_TO_SHOW=30
 
 
 #TO DO 
@@ -21,6 +21,9 @@ pipe_img2img = None
 g_cuda = torch.Generator(device='cuda')
 
 def inference(prompt, negative_prompt, num_samples, height=512, width=512, num_inference_steps=50, guidance_scale=7.5):
+
+    #gets the information from the UI to generate images from text
+
     if (height % 8) != 0 or (width % 8): #check if output image dimensions are mutliples of 8
         raise gr.Error("Both height and width must be multiples of 8")
         return
@@ -35,6 +38,9 @@ def inference(prompt, negative_prompt, num_samples, height=512, width=512, num_i
             ).images
 
 def img2img(prompt, negative_prompt, image, num_samples, guidance_scale=7.5, num_inference_steps=50, strength=0.8):
+
+    #gets the infromation from the UI to genrate images from images and from text
+
   with torch.autocast("cuda"), torch.inference_mode():
         return pipe_img2img(
                 prompt, image,
@@ -46,6 +52,9 @@ def img2img(prompt, negative_prompt, image, num_samples, guidance_scale=7.5, num
             ).images
 
 def init_model(weights_path: str):
+
+    #after a user as selected a model the model is initiliazied and can then be used to make inference by the user
+
     if weights_path == "":
         raise gr.Error("No model selected. Please choose from dropdown menu")
         return
@@ -78,6 +87,9 @@ def train(concept_images_1, concept_images_2, concept_images_3,
             concept_name_1, concept_name_2, concept_name_3,
             concept_class_name_1, concept_class_name_2, concept_class_name_3,
             model_name, max_train_steps, weights, use_base_model_checkbox):
+    """
+    gets the concept images, name of the concept and the class names of the concepts to tr
+    """
     files           = [concept_images_1,        concept_images_2,       concept_images_3]
     concept_names   = [concept_name_1,          concept_name_2,         concept_name_3]
     class_names     = [concept_class_name_1,    concept_class_name_2,   concept_class_name_3]
@@ -132,37 +144,58 @@ def update_concept_dropdown(weights_path):
     k = len(concepts)
     for i in range(len(concepts)):
         options_dropdown.append(concepts[i]["instance_prompt"].replace('photo of', ''))
-    return [gr.Dropdown.update(choices=options_dropdown, visible=True, value="")]* k + [gr.Dropdown.update(visible=False, value="")]*(MAX_CONCEPTS_TO_SHOW - k) + [gr.CheckboxGroup.update(visible=False, value=[])] +[gr.CheckboxGroup.update(visible=True, interactive=True, value=[])] * (k-1) + [gr.CheckboxGroup.update(visible=False, value=[])]*(MAX_CONCEPTS_TO_SHOW - k)
+    return [gr.Dropdown.update(choices=options_dropdown, visible=True, value="")]* (k+1) + [gr.Dropdown.update(visible=False, value="")]*(MAX_CONCEPTS_TO_SHOW - k) + [gr.CheckboxGroup.update(visible=True, interactive=True, value=[])] * k + [gr.CheckboxGroup.update(visible=False, value=[])]*(MAX_CONCEPTS_TO_SHOW - k)
 
 def generate_prompt(
-    d1, d2, d3, d4, d5, d6, d7, d8 , d9, d10,
-    c1, c2, c3, c4, c5, c6, c7, c8 , c9, c10
-
-):
+    bp_text, bp_concept,
+    d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30,
+    c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30,
+    txt_shape, txt_pattern, txt_texture, txt_color, txt_space,
+    cb_shape, cb_pattern, cb_texture, cb_color, cb_space,
+    custom_shape, custom_pattern, custom_texture, custom_color, custom_space):
     #there are as many dropdowns as there are checkboxes. The first half are all dropdowns, the second half are all checkboxes
-    dropdowns =  [d1, d2, d3, d4, d5, d6, d7, d8 , d9, d10]
-    checkboxes = [c1, c2, c3, c4, c5, c6, c7, c8 , c9, c10]
+    fashion_elements      = [txt_shape, txt_pattern, txt_texture, txt_color, txt_space]
+    fashion_element_props = [cb_shape , cb_pattern , cb_texture , cb_color , cb_space ]
+    fashion_element_custom = [custom_shape, custom_pattern, custom_texture, custom_color, custom_space]
+    dropdowns =  [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30]
+    checkboxes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30]
 
-    prompt = "photo of"
+    prompt = f"photo of {bp_text}" if len(bp_text) > 0 else f"photo of {bp_concept}"
+
     for i in range(len(dropdowns)):
-        if i == 0: #the first concept  
-           prompt += str(dropdowns[0])
-           continue
-        if dropdowns[i] != "" and len(checkboxes[i]) > 0: #so if there are more then one option selected
+        if dropdowns[i] != "" and len(checkboxes[i]) > 0: #so if there is an option selected
             prompt += " with "
-            if len(checkboxes[i]) == 1:
+            if len(checkboxes[i]) == 1: #if it is only a single option that is selected
                 prompt += f"{checkboxes[i][0]} of {dropdowns[i]} and" 
-            else:
+            else: #if there are more then one option selected
                 for j in range(len(checkboxes[i])):
                     prompt += f"{str(checkboxes[i][j])}, " if len(checkboxes[i]) != (j+1) else f" and {checkboxes[i][j]}"
 
                 prompt += f" of {dropdowns[i]} and"
-               
 
-    return prompt[:-3] #except the last 'and'
+    for i in range(len(fashion_elements)):
+        if len(fashion_element_custom[i]) > 0:
+            prompt += f" with {fashion_element_custom[i]} {fashion_elements[i]} and"
+            continue
 
-    
-    
+        if len(fashion_element_props[i]) > 0:
+            prompt += " with "
+            if len(fashion_element_props[i]) == 1:
+                prompt += f"{fashion_element_props[i][0]} {fashion_elements[i]} and" 
+            else:
+                for j in range(len(fashion_element_props[i])):
+                    print(str(fashion_element_props[i][j]))
+                    print(str(fashion_element_props[i]))
+
+                    prompt += f"{ str(fashion_element_props[i][j]) }, " if len(fashion_element_props[i]) != (j+1) else f" and {str(fashion_element_props[i][j])}"
+                prompt += f" {str(fashion_elements[i])} and"
+                    
+
+    prompt = prompt[:-3] if prompt[-3:] == "and" else prompt
+
+    return prompt #except the last 'and'
+
+
 dropdown_options = get_available_models()
 
 with gr.Blocks() as demo:
@@ -191,19 +224,14 @@ with gr.Blocks() as demo:
             model_load_button.click(fn=lambda: gr.update(visible=True), outputs=[model_load_progress])
 
 
-
-
-
-
         btn_dropdown_refresh.click(update_dropdown_options, outputs=[model_dropdown])
     
     #Concepts of a Model 
     with gr.Row():
-        max_textboxes = 10
         markdown_concept = gr.Markdown('ATTENTION: This selection will be shown if you select a model. If you want to make inference with this model you always have to clicke the buttion "Load Selected Model"', visible=False)
         textboxes_concept = []
         galleries_concept = []
-        for i in range(max_textboxes):
+        for i in range(MAX_CONCEPTS_TO_SHOW):
             t = gr.Textbox(f"Textbox {i}", visible=False, interactive=False)
             g = gr.Gallery(visible=False)
             textboxes_concept.append(t)
@@ -222,17 +250,63 @@ with gr.Blocks() as demo:
                 with gr.Row():
                     with gr.Column():
                         with gr.Row():
+                            gr.Markdown("If text box 'Base Piece' is filled the selected concept on the right is ignored")
+                        with gr.Row():
+                            base_piece_prompt_generator_text = gr.Textbox(label="Base Piece", info="This is the piece of cloths that the transfer of styles is applied to. For example, writing 'white thshirt' will generate a prompt 'photo of a white tshirt with shape of concept1 and color of concept2 ...")
+                            base_piece_prompt_generator_concept = gr.Dropdown(label=" concept", interactive=True, multiselect=False,visible=True)
+                        with gr.Row():
+                            gr.Markdown("")
+                        with gr.Row():
                             dropdowns_prompt_generator = []
                             checkboxes_prompt_generator= []
-                            for i in range(10): #has to be 10, because of number of attributes generate propmt function takes
+                            for i in range(30): #has to be 30, because of number of attributes generate propmt function takes
                                 with gr.Column():
-                                    dropdowns_prompt_generator.append(gr.Dropdown(label=" concept", interactive=True, multiselect=False,visible=False))
-                                    checkboxes_prompt_generator.append(gr.CheckboxGroup(["shape", "pattern", "color", "length"], label="Elements of Concept 2", info="Select the elements of the concept above that should be included e.g. clicking on pattern shape will add 'with pattern of XXX XXX'", visible=False))
+                                    dropdowns_prompt_generator.append(gr.Dropdown(label=" concept", interactive=True, multiselect=False,visible=True))
+                                    checkboxes_prompt_generator.append(gr.CheckboxGroup(["shape", "pattern", "color", "length"], label="Elements of the Concept", info="Select the elements of the concept above that should be included e.g. clicking on pattern shape will add 'with pattern of XXX XXX'", visible=True))
+                        with gr.Row():
+                            fashion_elements = [
+                                {
+                                    "name": "shape",
+                                    "properties": [
+                                        'oversize', 'skinny', 'baloon'
+                                    ]
+                                },
+                                {
+                                    "name": "pattern",
+                                    "properties": [
+                                        'stripes', 'animal', 'print', 'floral'
+                                    ]
+                                },
+                                {
+                                    "name": "texture",
+                                    "properties": [
+                                        'leather', 'velvet', 'fleece'
+                                    ]
+                                },                                {
+                                    "name": "color",
+                                    "properties": [
+                                        'red', 'green', 'blue', 'white', 'yellow', 'pink', 'purple'
+                                    ]
+                                },
+                                {
+                                    "name": "space",
+                                    "properties": [
+                                        'positive background', 'negative background'
+                                    ]
+                                }
+                                ]
+                            textbox_fashion_elements = []
+                            checkbox_fashion_elements= []
+                            textbox_fashion_element_custom=[]
+                            for fashion_element in fashion_elements:
+                                with gr.Column():
+                                    textbox_fashion_elements.append(gr.Textbox(label="Element", value=fashion_element['name'], interactive=False))
+                                    checkbox_fashion_elements.append(gr.CheckboxGroup(fashion_element['properties'], label=f"Properties of {fashion_element['name']}", info=f"Selecting this will include to the prompt e.g. 'and with ... {fashion_element['name']}'"))
+                                    textbox_fashion_element_custom.append(gr.Textbox(label="custom property", interactive=True, info="if this field is filled the above checkboxes are ignored"))
                         with gr.Row():
                             btn_combine = gr.Button(value="Generate Prompt")
                             #txt_generated_prompt = gr.Textbox(label="Generated Prompt")
 
-            
 
         with gr.Row(visible=False) as text2img_inference:
             with gr.Column():
@@ -263,8 +337,9 @@ with gr.Blocks() as demo:
 
             with gr.Column():
                 gr.Markdown('Drag & Drop the output from the inference here. This serves as input for the regeneration based on the prompt provided on the left')
-                input_img2img = gr.Image(type="pil")
-                gallery_img2img = gr.Gallery()
+                input_img2img = gr.Image(type="pil", download=True)
+                input_img2img.download = True
+                gallery_img2img = gr.Gallery(type="pil")
     
     #Training Concepts Tab
     with gr.Tab('Train New Concept'):
@@ -327,7 +402,7 @@ with gr.Blocks() as demo:
 
 
     #event listeners for  Prompt Generator 
-    model_dropdown.change(update_concept_dropdown, inputs=[model_dropdown], outputs=dropdowns_prompt_generator + checkboxes_prompt_generator)
-    btn_combine.click(generate_prompt, inputs=dropdowns_prompt_generator+checkboxes_prompt_generator, outputs=[prompt] )
+    model_dropdown.change(update_concept_dropdown, inputs=[model_dropdown], outputs=[base_piece_prompt_generator_concept] + dropdowns_prompt_generator + checkboxes_prompt_generator)
+    btn_combine.click(generate_prompt, inputs=[base_piece_prompt_generator_text, base_piece_prompt_generator_concept] + dropdowns_prompt_generator+checkboxes_prompt_generator + textbox_fashion_elements + checkbox_fashion_elements + textbox_fashion_element_custom , outputs=[prompt] )
 
-demo.launch(debug=True, share=False)
+demo.launch(debug=True, share=True)
