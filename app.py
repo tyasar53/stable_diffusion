@@ -12,7 +12,7 @@ from train_dreambooth import main
 
 MAX_CONCEPTS_TO_SHOW=30
 GRADIO_SHARE=False
-SHOW_ALL_SECTIONS=True
+SHOW_ALL_SECTIONS=False
 
 
 #TO DO 
