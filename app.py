@@ -11,6 +11,8 @@ from helper_functions import construct_concept_objects, construct_json, upload_f
 from train_dreambooth import main
 
 MAX_CONCEPTS_TO_SHOW=30
+GRADIO_SHARE=False
+SHOW_ALL_SECTIONS=True
 
 
 #TO DO 
@@ -83,16 +85,16 @@ def init_model(weights_path: str):
         prompt_generator: gr.update(visible=True)
         }
 
-def train(concept_images_1, concept_images_2, concept_images_3,
-            concept_name_1, concept_name_2, concept_name_3,
-            concept_class_name_1, concept_class_name_2, concept_class_name_3,
+def train(concept_images_1, concept_images_2, concept_images_3,  concept_images_4,  concept_images_5,
+            concept_name_1, concept_name_2, concept_name_3,  concept_name_4,  concept_name_5,
+            concept_class_name_1, concept_class_name_2, concept_class_name_3, concept_class_name_4, concept_class_name_5,
             model_name, max_train_steps, weights, use_base_model_checkbox):
     """
     gets the concept images, name of the concept and the class names of the concepts to tr
     """
-    files           = [concept_images_1,        concept_images_2,       concept_images_3]
-    concept_names   = [concept_name_1,          concept_name_2,         concept_name_3]
-    class_names     = [concept_class_name_1,    concept_class_name_2,   concept_class_name_3]
+    files           = [concept_images_1,        concept_images_2,       concept_images_3,       concept_images_4,       concept_images_5]
+    concept_names   = [concept_name_1,          concept_name_2,         concept_name_3,         concept_name_4,         concept_name_5]
+    class_names     = [concept_class_name_1,    concept_class_name_2,   concept_class_name_3,   concept_class_name_4,   concept_class_name_5]
 
     concepts = construct_concept_objects(files, concept_names, class_names)
     if construct_json(concepts) != None:
@@ -205,7 +207,7 @@ with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column():
             gr.Markdown('Select the model that you want to use to make inference from')
-            model_dropdown = gr.Dropdown(choices=dropdown_options, interactive=True, multiselect=False)
+            model_dropdown = gr.Dropdown(choices=dropdown_options, interactive=True, multiselect=False, label="Model Dropdown")
         with gr.Column():
             #Refresh List
             gr.Markdown('Press this button after training your own concept. It refreshes the list of availabel models')
@@ -243,26 +245,30 @@ with gr.Blocks() as demo:
         
     #Inference Tab
     with gr.Tab("Inference"):
-        with gr.Row(visible=False) as prompt_generator:
+        with gr.Row(visible=SHOW_ALL_SECTIONS) as prompt_generator:
             with gr.Column():
                 gr.Markdown("## Prompt Generator")
                 gr.Markdown("with the provide elemenst below you can generate prompts that combine different aspects of two concepts")
                 with gr.Row():
                     with gr.Column():
                         with gr.Row():
+                            gr.Markdown("## Select a Base Piece")
                             gr.Markdown("If text box 'Base Piece' is filled the selected concept on the right is ignored")
                         with gr.Row():
                             base_piece_prompt_generator_text = gr.Textbox(label="Base Piece", info="This is the piece of cloths that the transfer of styles is applied to. For example, writing 'white thshirt' will generate a prompt 'photo of a white tshirt with shape of concept1 and color of concept2 ...")
-                            base_piece_prompt_generator_concept = gr.Dropdown(label=" concept", interactive=True, multiselect=False,visible=True)
+                            base_piece_prompt_generator_concept = gr.Dropdown(label=" Base Concept", interactive=True, multiselect=False,visible=True)
                         with gr.Row():
-                            gr.Markdown("")
+                            gr.Markdown("## Include Properties of the Concepts")
                         with gr.Row():
                             dropdowns_prompt_generator = []
                             checkboxes_prompt_generator= []
                             for i in range(30): #has to be 30, because of number of attributes generate propmt function takes
                                 with gr.Column():
-                                    dropdowns_prompt_generator.append(gr.Dropdown(label=" concept", interactive=True, multiselect=False,visible=True))
+                                    dropdowns_prompt_generator.append(gr.Dropdown(label=" Concept", interactive=True, multiselect=False,visible=True))
                                     checkboxes_prompt_generator.append(gr.CheckboxGroup(["shape", "pattern", "color", "length"], label="Elements of the Concept", info="Select the elements of the concept above that should be included e.g. clicking on pattern shape will add 'with pattern of XXX XXX'", visible=True))
+                        with gr.Row():
+                            gr.Markdown("## Include Properties of General Elements")
+
                         with gr.Row():
                             fashion_elements = [
                                 {
@@ -307,12 +313,12 @@ with gr.Blocks() as demo:
                             btn_combine = gr.Button(value="Generate Prompt")
                             #txt_generated_prompt = gr.Textbox(label="Generated Prompt")
 
-
-        with gr.Row(visible=False) as text2img_inference:
+                gr.Markdown("## Generating Images")
+        with gr.Row(visible=SHOW_ALL_SECTIONS) as text2img_inference:
             with gr.Column():
                 prompt = gr.Textbox(label="Prompt", value="photo of lur dress", info=" The prompt or prompts to guide the image generation")
                 negative_prompt = gr.Textbox(label="Negative Prompt", value="", info="The prompt or prompts not to guide the image generation")
-                run = gr.Button(value="Generate")
+                run = gr.Button(value="Generate Image from Prompt")
                 with gr.Row():
                     num_samples = gr.Number(label="Number of Samples", value=4, info="Provide the number of samples that the model generates")
                     guidance_scale = gr.Number(label="Guidance Scale", value=7.5, info="Higher guidance scale encourages to generate images that are closely linked to the text prompt, usually at the expense of lower image quality")
@@ -322,7 +328,7 @@ with gr.Blocks() as demo:
                 num_inference_steps = gr.Slider(label="Steps", value=50, maximum=1000, info="The number of denoising steps. More denoising steps usually lead to a higher quality image at the expense of slower inference")
             with gr.Column():
                 gallery = gr.Gallery()
-        with gr.Row(visible=False) as img2img_inference:
+        with gr.Row(visible=SHOW_ALL_SECTIONS) as img2img_inference:
             with gr.Column():
                 gr.Markdown("## Regenerate from Output")
                 prompt_img2img          = gr.Textbox(label="Img2Img Prompt", value="change the color to blue", interactive=True, info="The prompt or prompts to guide the image generation")
@@ -342,7 +348,7 @@ with gr.Blocks() as demo:
                 gallery_img2img = gr.Gallery(type="pil")
     
     #Training Concepts Tab
-    with gr.Tab('Train New Concept'):
+    with gr.Tab('Train New Concepts'):
         with gr.Column() as training_concepts:
             with gr.Row():
                 gr.Markdown(
@@ -351,7 +357,7 @@ with gr.Blocks() as demo:
                 Plese upload the image files for the concept you want to teach the model. DO ONLY UPLOAD IMAGE FILE (png, jpeg)
 
 
-                **Name of your concept:** 
+                **Name of your Concept:** 
                 is the name that you will give your concept it should be a word that the model probably has a low prior knowledge. At the same time it should not be a bunch of random characters. If the name is to cryptic, the model will try to print the characters into the image
                 
                 
@@ -372,6 +378,14 @@ with gr.Blocks() as demo:
                 concept_images_3 = gr.File(file_count='multiple', interactive=True) 
                 concept_name_3 = gr.Textbox(label="Name of your concept", value="coco", interactive=True)
                 concept_class_name_3   = gr.Textbox(label="Class", value="jacket", interactive=True)
+            with gr.Row():
+                concept_images_4 = gr.File(file_count='multiple', interactive=True) 
+                concept_name_4 = gr.Textbox(label="Name of your concept", value="coco", interactive=True)
+                concept_class_name_4   = gr.Textbox(label="Class", value="jacket", interactive=True)
+            with gr.Row():
+                concept_images_5 = gr.File(file_count='multiple', interactive=True) 
+                concept_name_5 = gr.Textbox(label="Name of your concept", value="coco", interactive=True)
+                concept_class_name_5   = gr.Textbox(label="Class", value="jacket", interactive=True)
             
             model_name   = gr.Textbox(label="Model Name", value="my-model", interactive=True)
             gr.Markdown("Number of optimization steps. A value between 200 and 400 is sufficient in most cases")
@@ -379,22 +393,23 @@ with gr.Blocks() as demo:
 
             train_button = gr.Button(value="Train New Concepts", )
             concept_textbox = gr.Textbox(visible=True)
-            remove_data_button = gr.Button(value="Remove Data")
-            result_remove_operation = gr.Textbox(label="Result of remove operation", interactive=False)
+
+            #remove_data_button = gr.Button(value="Remove Data")
+            #result_remove_operation = gr.Textbox(label="Result of remove operation", interactive=False)
             train_button.click(fn=lambda x: gr.Textbox.update(visible=True))
 
     #Event Listeners
     train_button.click(train, 
         inputs=[
-            concept_images_1, concept_images_2, concept_images_3,
-            concept_name_1, concept_name_2, concept_name_3,
-            concept_class_name_1, concept_class_name_2, concept_class_name_3,
+            concept_images_1, concept_images_2, concept_images_3,concept_images_4, concept_images_5,
+            concept_name_1, concept_name_2, concept_name_3, concept_name_4, concept_name_5,
+            concept_class_name_1, concept_class_name_2, concept_class_name_3, concept_class_name_4, concept_class_name_5,
             model_name, max_train_steps, model_dropdown, use_base_model_checkbox
         ], 
         outputs=[concept_textbox])
     run.click(inference, inputs=[prompt, negative_prompt, num_samples, height, width, num_inference_steps, guidance_scale], outputs=gallery)
     regenerate.click(img2img, inputs=[prompt_img2img, negative_prompt_img2img, input_img2img, num_samples_img2img, guidance_scale_img2img, num_inference_steps_img2img, strength_img2img], outputs=gallery_img2img)
-    remove_data_button.click(empty_data_dir, outputs=[result_remove_operation])
+    #remove_data_button.click(empty_data_dir, outputs=[result_remove_operation])
     model_load_button.click(init_model, inputs=[model_dropdown], outputs=[model_load_progress, text2img_inference, img2img_inference, prompt_generator])
     btn_dropdown_refresh.click(update_dropdown_options, inputs=[model_dropdown])
 
@@ -405,4 +420,4 @@ with gr.Blocks() as demo:
     model_dropdown.change(update_concept_dropdown, inputs=[model_dropdown], outputs=[base_piece_prompt_generator_concept] + dropdowns_prompt_generator + checkboxes_prompt_generator)
     btn_combine.click(generate_prompt, inputs=[base_piece_prompt_generator_text, base_piece_prompt_generator_concept] + dropdowns_prompt_generator+checkboxes_prompt_generator + textbox_fashion_elements + checkbox_fashion_elements + textbox_fashion_element_custom , outputs=[prompt] )
 
-demo.launch(debug=True, share=True)
+demo.launch(debug=True, share=GRADIO_SHARE)
