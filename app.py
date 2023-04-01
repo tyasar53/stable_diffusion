@@ -14,10 +14,6 @@ MAX_CONCEPTS_TO_SHOW=30
 GRADIO_SHARE=False
 SHOW_ALL_SECTIONS=False
 
-
-#TO DO 
-# uploading multiple images, training on the lattest model
-
 pipe_text2img = None
 pipe_img2img = None
 g_cuda = torch.Generator(device='cuda')
@@ -396,6 +392,8 @@ with gr.Blocks() as demo:
 
             #remove_data_button = gr.Button(value="Remove Data")
             #result_remove_operation = gr.Textbox(label="Result of remove operation", interactive=False)
+            #remove_data_button.click(empty_data_dir, outputs=[result_remove_operation])
+
             train_button.click(fn=lambda x: gr.Textbox.update(visible=True))
 
     #Event Listeners
@@ -409,12 +407,7 @@ with gr.Blocks() as demo:
         outputs=[concept_textbox])
     run.click(inference, inputs=[prompt, negative_prompt, num_samples, height, width, num_inference_steps, guidance_scale], outputs=gallery)
     regenerate.click(img2img, inputs=[prompt_img2img, negative_prompt_img2img, input_img2img, num_samples_img2img, guidance_scale_img2img, num_inference_steps_img2img, strength_img2img], outputs=gallery_img2img)
-    #remove_data_button.click(empty_data_dir, outputs=[result_remove_operation])
     model_load_button.click(init_model, inputs=[model_dropdown], outputs=[model_load_progress, text2img_inference, img2img_inference, prompt_generator])
-    btn_dropdown_refresh.click(update_dropdown_options, inputs=[model_dropdown])
-
-
-
 
     #event listeners for  Prompt Generator 
     model_dropdown.change(update_concept_dropdown, inputs=[model_dropdown], outputs=[base_piece_prompt_generator_concept] + dropdowns_prompt_generator + checkboxes_prompt_generator)

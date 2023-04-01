@@ -23,98 +23,98 @@
 - concepts_list:
   - instance_prompt: photo of bejflow dress
     class_prompt: photo of an dress
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/bejflow
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/bejflow
     class_data_dir: /content/data/button
   - instance_prompt: photo of bluski skirt
     class_prompt: photo of a skirt
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/bluski
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/bluski
     class_data_dir: /content/data/dress
   - instance_prompt: photo of coleo shape
     class_prompt: photo of a shape
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/coleo
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/coleo
     class_data_dir: /content/data/sweatshirt
   - instance_prompt: photo of munique painting
     class_prompt: photo of a painting
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/munique
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/munique
     class_data_dir: /content/data/paint
   - instance_prompt: photo of yummz pattern
     class_prompt: photo of a pattern
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/yummz
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/yummz
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of crocod boots
     class_prompt: photo of a boots
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/crocod
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/crocod
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of cutenose pillow
     class_prompt: photo of a pillow
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/cutenose
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/cutenose
     class_data_dir: /content/data/pattern 
   - instance_prompt: photo of fabwom woman
     class_prompt: photo of a woman
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/fabwom
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/fabwom
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of flowre necklace
     class_prompt: photo of a necklace
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/flowre
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/flowre
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of guzel tshirt
     class_prompt: photo of a tshirt
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/guzel
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/guzel
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of lalala sweatshirt
     class_prompt: photo of a sweatshirt
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/sweatshirt
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/sweatshirt
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of lovelz pants
     class_prompt: photo of a pants
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/lovelz
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/lovelz
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of mavibe dress
     class_prompt: photo of a dress
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/mavibe
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/mavibe
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of meltin painting
     class_prompt: photo of an painting
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/meltin
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/meltin
     class_data_dir: /content/data/button
   - instance_prompt: photo of moop bag
     class_prompt: photo of a bag
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/moop
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/moop
     class_data_dir: /content/data/dress
   - instance_prompt: photo of mymon coat
     class_prompt: photo of a coat
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/mymon
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/mymon
     class_data_dir: /content/data/sweatshirt
   - instance_prompt: photo of mystcfor view
     class_prompt: photo of a view
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/mystcfor
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/mystcfor
     class_data_dir: /content/data/paint
   - instance_prompt: photo of oldgold figure
     class_prompt: photo of a figure
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/oldgold
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/oldgold
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of onne design
     class_prompt: photo of a design
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/onne
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/onne
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of orpi button
     class_prompt: photo of a button
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/orpi
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/orpi
     class_data_dir: /content/data/pattern 
   - instance_prompt: photo of picol sweatshirt
     class_prompt: photo of a sweatshirt
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/picol
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/picol
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of rhot clothing
     class_prompt: photo of a clothing
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/rhot
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/rhot
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of sallz cartoon
     class_prompt: photo of a cartoon
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/sallz
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/sallz
     class_data_dir: /content/data/pattern
   - instance_prompt: photo of smvibe bikini
     class_prompt: photo of a bikini
-    instance_data_dir: /home/team2/stable_diffusion/data/kennurbaya/smvibe
+    instance_data_dir: /home/team2/stable_diffusion/data/model-a/smvibe
     class_data_dir: /content/data/pattern
-  weights_path: /home/team2/stable_diffusion/weights/kennurbaya/800
+  weights_path: /home/team2/stable_diffusion/weights/model-a/800
