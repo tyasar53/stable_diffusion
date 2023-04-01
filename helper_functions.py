@@ -88,7 +88,6 @@ def log_training(model_path, selecte_as_prior_weights, use_base_model_checkbox):
     config = {}
     with open(os.path.join(os.getcwd(), 'train.config.yml'), 'r') as stream:
         config=yaml.safe_load(stream)
-        print(config)
 
     with open(os.path.join(os.getcwd(), 'concepts_list.json'), 'r') as json_file:
         concepts_list = json.load(json_file)
@@ -117,10 +116,8 @@ def get_concepts(weights_path):
         logs=yaml.safe_load(stream)
 
     for train_run in logs:
-        print(f"train run paths: {train_run['weights_path']}  == {weights_path}")
         if train_run['weights_path'] == weights_path:
             concepts = train_run['concepts_list']
-            #print(concepts)
             break
     
     concepts_to_return = []
@@ -133,13 +130,6 @@ def get_concepts(weights_path):
             if len(files) > 0:
                 for file_path in files:
                     images.append(Image.open(os.path.join(concept['instance_data_dir'], file_path)))
-            
-        #for image_path in next(os.walk(concept['instance_data_dir']))[2]:
-        #    print(image_path)
-        #    images.append(
-        #        Image.open(os.path.join(concept['instance_data_dir'], image_path))
-        #    )
         
         concepts_to_return.append( {"instance_prompt": concept['instance_prompt'], "class_prompt": concept['class_prompt'], "instance_images": images} )
-    print(concepts_to_return)
     return concepts_to_return

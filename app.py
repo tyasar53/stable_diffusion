@@ -12,7 +12,7 @@ from train_dreambooth import main
 
 MAX_CONCEPTS_TO_SHOW=30
 GRADIO_SHARE=False
-SHOW_ALL_SECTIONS=False
+SHOW_ALL_SECTIONS=True
 
 
 #TO DO 
@@ -136,7 +136,7 @@ def disable_concepts_view():
 
         return [gr.Markdown.update(visible=False)] + update_textboxes  + update_galleries + [gr.Textbox.update(value="", visible=False)]
   
-def update_dropdown_options(dropdown):
+def update_dropdown_options():
     choices = get_available_models()
     return gr.Dropdown.update(choices=choices)
     
@@ -186,9 +186,6 @@ def generate_prompt(
                 prompt += f"{fashion_element_props[i][0]} {fashion_elements[i]} and" 
             else:
                 for j in range(len(fashion_element_props[i])):
-                    print(str(fashion_element_props[i][j]))
-                    print(str(fashion_element_props[i]))
-
                     prompt += f"{ str(fashion_element_props[i][j]) }, " if len(fashion_element_props[i]) != (j+1) else f" and {str(fashion_element_props[i][j])}"
                 prompt += f" {str(fashion_elements[i])} and"
                     
@@ -274,7 +271,7 @@ with gr.Blocks() as demo:
                                 {
                                     "name": "shape",
                                     "properties": [
-                                        'oversize', 'skinny', 'baloon'
+                                        'slim', 'oversize', 'skinny', 'tunic', 'baloon'
                                     ]
                                 },
                                 {

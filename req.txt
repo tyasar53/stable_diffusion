@@ -1,0 +1,15 @@
+diffusers @ git+https://github.com/ShivamShrirao/diffusers@ec24e54a9851474458a6e7ad801f907eba89d867
+huggingface-hub==0.13.2
+Pillow==9.4.0
+torch==2.0.0
+torchvision==0.15.1 
+triton==2.0.0
+accelerate==0.18.0
+transformers==4.27.4
+ftfy==6.1.1
+bitsandbytes==0.35.0
+gradio==3.22.1
+natsort==8.3.1
+safetensors==0.3.0
+xformers==0.0.18
+torchaudio==2.0.1
