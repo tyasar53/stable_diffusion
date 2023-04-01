@@ -12,7 +12,7 @@ from train_dreambooth import main
 
 MAX_CONCEPTS_TO_SHOW=30
 GRADIO_SHARE=False
-SHOW_ALL_SECTIONS=True
+SHOW_ALL_SECTIONS=False
 
 
 #TO DO 
@@ -331,8 +331,11 @@ with gr.Blocks() as demo:
         with gr.Row(visible=SHOW_ALL_SECTIONS) as img2img_inference:
             with gr.Column():
                 gr.Markdown("## Regenerate from Output")
+                btn_zoom_out = gr.Button('Add Zoom Out Prompt')
                 prompt_img2img          = gr.Textbox(label="Img2Img Prompt", value="change the color to blue", interactive=True, info="The prompt or prompts to guide the image generation")
                 negative_prompt_img2img = gr.Textbox(label="Img2Img Negative Prompt", value="", interactive=True, info="The prompt or prompts not to guide the image generation" )
+                btn_zoom_out.click(lambda: "zoom out to see the full image", outputs=[prompt_img2img])
+
                 regenerate = gr.Button("Regenerate")
                 with gr.Row():
                     num_samples_img2img    = gr.Number(label="Number of Samples", value=4, info="Provide the number of samples that the model generates")
@@ -389,7 +392,7 @@ with gr.Blocks() as demo:
             
             model_name   = gr.Textbox(label="Model Name", value="my-model", interactive=True)
             gr.Markdown("Number of optimization steps. A value between 200 and 400 is sufficient in most cases")
-            max_train_steps = gr.Number(label="Number of training steps", value=400, interactive=True)
+            max_train_steps = gr.Number(label="Number of Training Steps", value=400, interactive=True)
 
             train_button = gr.Button(value="Train New Concepts", )
             concept_textbox = gr.Textbox(visible=True)
