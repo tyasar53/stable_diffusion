@@ -355,6 +355,7 @@ with gr.Blocks() as demo:
 
                 **Name of your Concept:** 
                 is the name that you will give your concept it should be a word that the model probably has a low prior knowledge. At the same time it should not be a bunch of random characters. If the name is to cryptic, the model will try to print the characters into the image
+                **ATTENTION: if you train on a model that was already trained on concepts, check the names of those concepts to not have the same name for two concepts. The model will not throw an error but the results will not be as expecte**
                 
                 
                 **Class:** 

@@ -39,5 +39,19 @@ After completing the above steps you can start the application
 ```bash
 python app.py
 ```
+If you want to develop the prototype further, by running 
 
+```bash
+gradio app.py
+```
+
+it will start the applicaiton in reload mode. Whenever something is changed, the applicaiton reloads automatically to show the results of you changes immediately. 
 adding the weights
+
+## Sharing the application
+in the [app.py](app.py) file at the very top you can set the GRADIO_SHARE variable to True. Whenever starting the application it generates a random link that makes the application accessible from the internet. However if you reload the application the link changes.
+If you want a stable permanent link you can refer to [ngrok](https://ngrok.com/). They provide easy to setup tunnels to you application with permanent links.
+
+## Use pre-trained models
+to be able to use the pretrained models that we used for testing you basically have to download the first model ([model-a]()) with 20+ concepts and the second model ([model-b]()) with 6 concepts.
+After downloading you have to put booth folders "model-a" and "model-b" in the [weights](./weights) folder of this project. Start the application and you should be able to select the two models from the dropdown. After loading them in the application you are ready to generate images from the concepsts.
