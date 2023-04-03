@@ -1,7 +1,7 @@
 
-# Fashion Design and AI: Generative Fashion Model based on Stable Diffusion
+# Computational Creativity: Generative Fashion Design with AI-Driven System — Prototype
 
-This is the documentation for the prototype. To know how to use this model, please refer to the [Usage Guide](./docs/usage-guide.md)
+This is the documentation for the prototype of the Team Project 2022/2023 with the chair of Prof. Dr. A. Heinzel at the University of Mannheim. To know how to use this model, please refer to the [Usage Guide](./docs/usage-guide.md)
 
 ## Installation
 
@@ -55,3 +55,6 @@ If you want a stable permanent link you can refer to [ngrok](https://ngrok.com/)
 ## Use pre-trained models
 to be able to use the pretrained models that we used for testing you basically have to download the first model ([model-a](https://drive.google.com/drive/folders/1JE81HP16Hp0RbmbtRQzmCMHMnmATZ9_0?usp=share_link)) with 20+ concepts and the second model ([model-b](https://drive.google.com/drive/folders/1hLI7l3Ao0OKls0r5OA8MLuqt9wM9RmO5?usp=share_link)) with 6 concepts.
 After downloading you have to put booth folders "model-a" and "model-b" in the [weights](./weights) folder of this project. Make sure that they are actually called "model-a" and "model-b". Start the application and you should be able to select the two models from the dropdown. After loading them in the application you are ready to generate images from the concepsts.
+
+## Info
+Make sure to have sufficiently large memory and gpu access to run this model. 20 GB of VRAM are required at least.
