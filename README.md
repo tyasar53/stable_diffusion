@@ -1,7 +1,7 @@
 
 # Computational Creativity: Generative Fashion Design with AI-Driven System — Prototype
 
-This is the documentation for the prototype of the Team Project 2022/2023 with the chair of Prof. Dr. A. Heinzel at the University of Mannheim. To know how to use this model, please refer to the [Usage Guide](./docs/usage-guide.md)
+This is the documentation for the prototype of the Team Project 2022/2023 with the chair of Prof. Dr. A. Heinzel at the University of Mannheim. To know how to use this model, please refer to the [Usage Guide](./docs/usage-guide.md). The code for training new models was inspired by this repository of Shivam Shrirao from [GitHub](https://github.com/ShivamShrirao/diffusers/tree/main/examples/dreambooth).
 
 ## Installation
 
