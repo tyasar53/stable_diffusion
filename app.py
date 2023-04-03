@@ -362,7 +362,7 @@ with gr.Blocks() as demo:
                 The class name should be a single worded noun that best describes the category you concept belongs to.
                 ''')
 
-            use_base_model_checkbox = gr.Checkbox(label='Use new model for training (if not selected the model selecte from the dropdown above will be selected. If that is left empty then a new model will be used for training)', interactive=True)
+            use_base_model_checkbox = gr.Checkbox(label='Use new model for training (if not selected the model selecte from the dropdown above will be selected. If that is left empty then a new model will be used for training)', interactive=True, value=True)
             with gr.Row():
                 concept_images_1 = gr.File(file_count='multiple', interactive=True) 
                 concept_name_1 = gr.Textbox(label="Name of your concept", value="coco", interactive=True)
