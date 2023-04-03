@@ -53,5 +53,5 @@ in the [app.py](app.py) file at the very top you can set the GRADIO_SHARE variab
 If you want a stable permanent link you can refer to [ngrok](https://ngrok.com/). They provide easy to setup tunnels to you application with permanent links.
 
 ## Use pre-trained models
-to be able to use the pretrained models that we used for testing you basically have to download the first model ([model-a]()) with 20+ concepts and the second model ([model-b]()) with 6 concepts.
-After downloading you have to put booth folders "model-a" and "model-b" in the [weights](./weights) folder of this project. Start the application and you should be able to select the two models from the dropdown. After loading them in the application you are ready to generate images from the concepsts.
+to be able to use the pretrained models that we used for testing you basically have to download the first model ([model-a](https://drive.google.com/drive/folders/1JE81HP16Hp0RbmbtRQzmCMHMnmATZ9_0?usp=share_link)) with 20+ concepts and the second model ([model-b](https://drive.google.com/drive/folders/1hLI7l3Ao0OKls0r5OA8MLuqt9wM9RmO5?usp=share_link)) with 6 concepts.
+After downloading you have to put booth folders "model-a" and "model-b" in the [weights](./weights) folder of this project. Make sure that they are actually called "model-a" and "model-b". Start the application and you should be able to select the two models from the dropdown. After loading them in the application you are ready to generate images from the concepsts.
